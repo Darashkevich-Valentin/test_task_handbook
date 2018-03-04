@@ -11,16 +11,20 @@ XMLRepository::XMLRepository()
 
 void XMLRepository::open(QIODevice::OpenMode mode) {
     ob_file_repository->setFileName("D:/contacts.xml");
-    qDebug() << ob_file_repository->open(mode);
+    if(!ob_file_repository->open(mode)) {
+        emit error("Ошибка открытия файла "+ob_file_repository->fileName());
+    }
 }
 
 void XMLRepository::close() {
     ob_file_repository->flush();
     ob_file_repository->close();
+    emit updated();
 }
 
 void XMLRepository::add(Contact *contact) {
     contacts->append(contact);
+    connect(contact, SIGNAL(contactChanged()),SLOT(contactChanged()));
     writeAll();
 }
 
@@ -32,7 +36,10 @@ void XMLRepository::remove(Contact *contact) {
 }
 
 void XMLRepository::update(Contact *contact) {
-    remove(contact);
+    if(contacts->contains(contact)) {
+        contacts->removeAll(contact);
+        add(contact);
+    }
 }
 
 void XMLRepository::writeAll() {
@@ -62,12 +69,28 @@ void XMLRepository::readAll() {
                     contact->setName(ob_xmlreader->attributes().at(0).value().toString());
                     contact->setPhoneNumber(ob_xmlreader->attributes().at(1).value().toString());
                     contacts->append(contact);
+                    connect(contact,SIGNAL(contactChanged()),SLOT(contactChanged()));
                 }
             }
         } else {
             qDebug() << "error";
-            emit error("Ошибка в чтении XML-документа. Возможно повреждение структуры документа");
+            emit error("Ошибка в чтении XML документа. Возможно повреждение структуры документа");
+            break;
         }
     }
     close();
+}
+
+XMLRepository::~XMLRepository() {
+    contacts->clear();
+    delete contacts;
+    delete ob_xmlreader;
+    delete ob_xmlwriter;
+    delete ob_file_repository;
+}
+
+// Slots
+
+void XMLRepository::contactChanged() {
+    writeAll();
 }

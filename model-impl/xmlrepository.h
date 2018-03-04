@@ -13,6 +13,7 @@ class XMLRepository: public Repository
     Q_OBJECT
 public:
     XMLRepository();
+    ~XMLRepository();
     void open(QIODevice::OpenMode mode);
     void close();
     QList<Contact *>* getContacts();
@@ -27,6 +28,9 @@ private:
     QXmlStreamWriter *ob_xmlwriter;
 
     QFile *ob_file_repository;
+
+private slots:
+    void contactChanged();
 };
 
 #endif // XMLREPOSITORY_H

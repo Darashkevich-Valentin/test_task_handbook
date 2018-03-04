@@ -20,9 +20,10 @@ public:
 
 protected:
     QList<Contact*> *contacts;
+
 signals:
     void error(QString msg);
-    void success(QString msg);
+    void updated();
 };
 
 #endif // REPOSITORY_H

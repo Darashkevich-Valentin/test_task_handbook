@@ -15,13 +15,14 @@ void StartWindow::createObjects() {
 
     l_vlay_root = new QVBoxLayout;
 
-    contact = new PhoneContact;
-    ob_repo = new XMLRepository;
-    contact->setName("name1");
-    contact->setPhoneNumber("sdfsd");
-    ob_repo->readAll();
-    qDebug() << ob_repo->getContacts()->at(0)->phoneNumber();
-    connect(contact, SIGNAL(phoneNumberChanged()), SLOT(contactChanged()));
+    ob_repository = new XMLRepository;
+    Contact *d = new PhoneContact;
+    d->setName("name1");
+    d->setPhoneNumber("+34123");
+    ob_repository->add(d);
+}
+
+void StartWindow::connectSignals() {
 
 }
 
@@ -34,10 +35,33 @@ void StartWindow::initUI() {
     w_tablewidget_book->hide();
 }
 
-void StartWindow::contactChanged() {
-    qDebug() << "111";
+void StartWindow::setRepository(Repository *repository) {
+    ob_repository = repository;
 }
 
 StartWindow::~StartWindow()
 {
+
+}
+
+// Slots
+
+void StartWindow::repositoryError(QString msg) {
+    qDebug() << msg;
+}
+
+void StartWindow::repositoryUpdated() {
+
+}
+
+void StartWindow::addContact() {
+
+}
+
+void StartWindow::removeContact() {
+
+}
+
+void StartWindow::editContact() {
+
 }

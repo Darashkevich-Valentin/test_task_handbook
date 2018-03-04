@@ -13,7 +13,6 @@ public:
 
     QString name();
     QString phoneNumber();
-    int id();
 
     void setName(QString name);
     void setPhoneNumber(QString phoneNumber);
