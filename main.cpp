@@ -1,4 +1,4 @@
-#include "startwindow.h"
+#include "ui/startwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

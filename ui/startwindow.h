@@ -7,7 +7,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <model-impl/phonecontact.h>
-#include <model/contact.h>
+#include <model-impl/xmlrepository.h>
 
 class StartWindow : public QWidget
 {
@@ -26,8 +26,12 @@ private:
 
     Contact *contact;
 
+    XMLRepository *ob_repo;
+
     void createObjects();
     void initUI();
+private slots:
+    void contactChanged();
 
 };
 

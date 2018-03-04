@@ -1,4 +1,4 @@
-#include "startwindow.h"
+#include "ui/startwindow.h"
 #include <QDebug>
 
 
@@ -16,11 +16,13 @@ void StartWindow::createObjects() {
     l_vlay_root = new QVBoxLayout;
 
     contact = new PhoneContact;
-    //contact->setName(name);
-    contact->setPhoneNumber("sdfs1");
+    ob_repo = new XMLRepository;
+    contact->setName("name1");
     contact->setPhoneNumber("sdfsd");
+    ob_repo->readAll();
+    qDebug() << ob_repo->getContacts()->at(0)->phoneNumber();
+    connect(contact, SIGNAL(phoneNumberChanged()), SLOT(contactChanged()));
 
-    setWindowTitle(contact->phoneNumber());
 }
 
 void StartWindow::initUI() {
@@ -32,7 +34,9 @@ void StartWindow::initUI() {
     w_tablewidget_book->hide();
 }
 
-
+void StartWindow::contactChanged() {
+    qDebug() << "111";
+}
 
 StartWindow::~StartWindow()
 {

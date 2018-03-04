@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        startwindow.cpp \
-    model-impl/phonecontact.cpp
+        ui/startwindow.cpp \
+    model-impl/phonecontact.cpp \
+    model-impl/xmlrepository.cpp
 
 HEADERS += \
-        startwindow.h \
+        ui/startwindow.h \
     model-impl/phonecontact.h \
-    model/contact.h
+    model/contact.h \
+    model/repository.h \
+    model-impl/xmlrepository.h
