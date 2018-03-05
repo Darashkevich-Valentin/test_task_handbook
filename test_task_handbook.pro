@@ -35,3 +35,6 @@ HEADERS += \
     model/contact.h \
     model/repository.h \
     model-impl/xmlrepository.h
+
+RESOURCES += \
+    resources.qrc

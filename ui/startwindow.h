@@ -11,6 +11,7 @@
 #include <model/repository.h>
 #include <QHeaderView>
 #include <QHBoxLayout>
+#include <QDialog>
 
 class StartWindow : public QWidget
 {
@@ -40,6 +41,8 @@ private:
 private slots:
     void repositoryError(QString msg);
     void repositoryUpdated();
+
+    void selectedContact();
 
     void addContact();
     void removeContact();

@@ -7,6 +7,8 @@ XMLRepository::XMLRepository()
     ob_xmlreader = new QXmlStreamReader(ob_file_repository);
     ob_xmlwriter = new QXmlStreamWriter(ob_file_repository);
     contacts = new QList<Contact*>();
+
+    ob_xmlwriter->setAutoFormatting(true);
 }
 
 void XMLRepository::open(QIODevice::OpenMode mode) {
@@ -44,12 +46,16 @@ void XMLRepository::update(Contact *contact) {
 
 void XMLRepository::writeAll() {
     open(QIODevice::WriteOnly);
+    ob_xmlwriter->writeStartDocument();
+    ob_xmlwriter->writeStartElement("Contacts");
     for(int i = 0; i < contacts->count(); i++) {
         ob_xmlwriter->writeStartElement("Contact");
         ob_xmlwriter->writeAttribute("name", contacts->at(i)->name());
         ob_xmlwriter->writeAttribute("phone", contacts->at(i)->phoneNumber());
         ob_xmlwriter->writeEndElement();
     }
+    ob_xmlwriter->writeEndElement();
+    ob_xmlwriter->writeEndDocument();
     close();
 }
 
@@ -73,6 +79,7 @@ void XMLRepository::readAll() {
                 }
             }
         } else {
+            qDebug() << ob_xmlreader->errorString();
             emit error("Ошибка в чтении XML документа. Возможно повреждение структуры документа");
             break;
         }
