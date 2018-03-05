@@ -3,5 +3,8 @@
         <file>resources/img/add.png</file>
         <file>resources/img/edit.png</file>
         <file>resources/img/remove.png</file>
+        <file>resources/img/accept.png</file>
+        <file>resources/img/cancel.png</file>
+        <file>resources/img/contact.png</file>
     </qresource>
 </RCC>

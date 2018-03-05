@@ -27,14 +27,16 @@ SOURCES += \
         main.cpp \
         ui/startwindow.cpp \
     model-impl/phonecontact.cpp \
-    model-impl/xmlrepository.cpp
+    model-impl/xmlrepository.cpp \
+    ui/contactwindow.cpp
 
 HEADERS += \
         ui/startwindow.h \
     model-impl/phonecontact.h \
     model/contact.h \
     model/repository.h \
-    model-impl/xmlrepository.h
+    model-impl/xmlrepository.h \
+    ui/contactwindow.h
 
 RESOURCES += \
     resources.qrc

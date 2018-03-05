@@ -19,7 +19,7 @@ void StartWindow::createObjects() {
     l_vlay_root = new QVBoxLayout;
     l_hlay_buttons = new QHBoxLayout;
 
-
+    w_contactwindow = new ContactWindow;
 }
 
 void StartWindow::connectSignals() {
@@ -27,6 +27,7 @@ void StartWindow::connectSignals() {
     connect(w_button_edit_contact, SIGNAL(clicked(bool)), SLOT(editContact()));
     connect(w_button_remove_contact, SIGNAL(clicked(bool)), SLOT(removeContact()));
     connect(w_tablewidget_book, SIGNAL(itemSelectionChanged()), SLOT(selectedContact()));
+    connect(w_tablewidget_book, SIGNAL(cellDoubleClicked(int,int)), SLOT(editContact()));
 }
 
 void StartWindow::initUI() {
@@ -53,7 +54,7 @@ void StartWindow::initUI() {
 
     w_button_add_contact->setStyleSheet("QPushButton { background: rgb(66, 134, 244); border: none; }"
                                         "QPushButton:hover { background: rgb(66, 134, 180); border: none; }"
-                                        "QPushButton:pressed { background: rgb(66, 134, 160); border: none; } ");
+                                        "QPushButton:pressed { background: rgb(66, 134, 160); border: none; }");
     w_button_add_contact->setMinimumHeight(40);
     w_button_add_contact->setIcon(QIcon(":/resources/img/add.png"));
     w_button_add_contact->setToolTip("Добавить");
@@ -108,6 +109,15 @@ void StartWindow::repositoryUpdated() {
 }
 
 void StartWindow::addContact() {
+    w_contactwindow->setName("");
+    w_contactwindow->setPhoneNumber("");
+
+    if(w_contactwindow->exec() == ContactWindow::Accepted) {
+        Contact *contact = new PhoneContact;
+        contact->setName(w_contactwindow->name());
+        contact->setPhoneNumber(w_contactwindow->phoneNumber());
+        ob_repository->add(contact);
+    };
 }
 
 void StartWindow::removeContact() {
@@ -115,7 +125,16 @@ void StartWindow::removeContact() {
 }
 
 void StartWindow::editContact() {
+    QTableWidgetItem *itemSelected = w_tablewidget_book->selectedItems().at(0);
+    Contact *contact = ob_repository->getContacts()->at(itemSelected->row());
 
+    w_contactwindow->setName(contact->name());
+    w_contactwindow->setPhoneNumber(contact->phoneNumber());
+
+    if(w_contactwindow->exec() == ContactWindow::Accepted) {
+        contact->setName(w_contactwindow->name());
+        contact->setPhoneNumber(w_contactwindow->phoneNumber());
+    }
 }
 
 void StartWindow::selectedContact() {

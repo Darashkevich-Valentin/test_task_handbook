@@ -11,7 +11,8 @@
 #include <model/repository.h>
 #include <QHeaderView>
 #include <QHBoxLayout>
-#include <QDialog>
+#include <ui/contactwindow.h>
+
 
 class StartWindow : public QWidget
 {
@@ -31,6 +32,8 @@ private:
 
     QVBoxLayout *l_vlay_root;
     QHBoxLayout *l_hlay_buttons;
+
+    ContactWindow *w_contactwindow;
 
     Repository *ob_repository;
 
