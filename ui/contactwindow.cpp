@@ -23,9 +23,13 @@ void ContactWindow::createObjects() {
     l_hlay_buttons = new QHBoxLayout;
     l_hlay_name_field = new QHBoxLayout;
     l_hlay_phone_field = new QHBoxLayout;
+
+    ob_validator_phone = new QRegularExpressionValidator;
 }
 
 void ContactWindow::initUI() {
+    ob_validator_phone->setRegularExpression(QRegularExpression("^\\d+$"));
+
     setLayout(l_vlay_root);
     setContentsMargins(0, 0, 0, 0);
     setMinimumSize(400, 300);
@@ -61,6 +65,7 @@ void ContactWindow::initUI() {
     w_line_name->setMinimumHeight(20);
 
     w_line_phone->setMinimumHeight(20);
+    w_line_phone->setValidator(ob_validator_phone);
 
     w_button_ok->setMinimumHeight(40);
     w_button_ok->setStyleSheet("QPushButton { background: rgb(66, 134, 244); border: none; }"
@@ -96,4 +101,9 @@ void ContactWindow::setName(QString name) {
 
 void ContactWindow::setPhoneNumber(QString phoneNumber) {
     w_line_phone->setText(phoneNumber);
+}
+
+ContactWindow::~ContactWindow() {
+    delete l_vlay_root;
+    delete ob_validator_phone;
 }

@@ -6,14 +6,14 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-#include <model-impl/phonecontact.h>
-#include <model-impl/xmlrepository.h>
-#include <model/repository.h>
 #include <QHeaderView>
 #include <QHBoxLayout>
-#include <ui/contactwindow.h>
-#include <ui/deletewindow.h>
-
+#include <QLabel>
+#include <QTimer>
+#include "model-impl/phonecontact.h"
+#include "model-impl/xmlrepository.h"
+#include "ui/contactwindow.h"
+#include "ui/deletewindow.h"
 
 class StartWindow : public QWidget
 {
@@ -41,6 +41,10 @@ private:
 
     Repository *ob_repository;
 
+    QTimer *ob_timer;
+
+    QLabel *w_label_error;
+
     void createObjects();
     void initUI();
     void connectSignals();
@@ -54,6 +58,8 @@ private slots:
     void addContact();
     void removeContact();
     void editContact();
+
+    void hideError();
 };
 
 #endif // STARTWINDOW_H

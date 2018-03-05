@@ -1,6 +1,4 @@
 #include "ui/startwindow.h"
-#include <QDebug>
-
 
 StartWindow::StartWindow(QWidget *parent)
     : QWidget(parent)
@@ -14,14 +12,20 @@ void StartWindow::createObjects() {
     w_button_add_contact = new QPushButton;
     w_button_edit_contact = new QPushButton;
     w_button_remove_contact = new QPushButton;
-    w_tablewidget_book = new QTableWidget;
-
-    l_vlay_root = new QVBoxLayout;
-    l_hlay_buttons = new QHBoxLayout;
 
     w_contactwindow = new ContactWindow(this);
 
     w_deletewindow = new DeleteWindow(this);
+
+    w_tablewidget_book = new QTableWidget;
+
+    w_label_error = new QLabel;
+
+    l_vlay_root = new QVBoxLayout;
+    l_hlay_buttons = new QHBoxLayout;
+
+    ob_timer = new QTimer;
+
 }
 
 void StartWindow::connectSignals() {
@@ -30,12 +34,16 @@ void StartWindow::connectSignals() {
     connect(w_button_remove_contact, SIGNAL(clicked(bool)), SLOT(removeContact()));
     connect(w_tablewidget_book, SIGNAL(itemSelectionChanged()), SLOT(selectedContact()));
     connect(w_tablewidget_book, SIGNAL(cellDoubleClicked(int,int)), SLOT(editContact()));
+    connect(ob_timer, SIGNAL(timeout()), SLOT(hideError()));
 }
 
 void StartWindow::initUI() {
     setLayout(l_vlay_root);
     setContentsMargins(0,0,0,0);
+    setWindowTitle("HandBook");
+    setMinimumSize(700, 400);
 
+    l_vlay_root->addWidget(w_label_error);
     l_vlay_root->addWidget(w_tablewidget_book);
     l_vlay_root->addLayout(l_hlay_buttons);
     l_vlay_root->setContentsMargins(0,0,0,0);
@@ -75,6 +83,10 @@ void StartWindow::initUI() {
     w_button_remove_contact->setToolTip("Удалить");
     w_button_remove_contact->hide();
 
+    w_label_error->setFixedHeight(40);
+    w_label_error->setAlignment(Qt::AlignCenter);
+    w_label_error->setStyleSheet("background: rgb(226, 40, 40); border: none; color: white;");
+    w_label_error->hide();
 }
 
 void StartWindow::setRepository(Repository *repository) {
@@ -86,13 +98,17 @@ void StartWindow::setRepository(Repository *repository) {
 
 StartWindow::~StartWindow()
 {
-
+    delete l_vlay_root;
+    delete ob_repository;
+    delete ob_timer;
 }
 
 // Slots
 
 void StartWindow::repositoryError(QString msg) {
-    qDebug() << msg;
+    w_label_error->setText(msg);
+    w_label_error->show();
+    ob_timer->start(5000);
 }
 
 void StartWindow::repositoryUpdated() {
@@ -142,7 +158,6 @@ void StartWindow::removeContact() {
         }
     } else {
         w_deletewindow->setQuestionText("Действительно удалить этот контакт?");
-        qDebug() << "sdfsdfdsf";
         if(w_deletewindow->exec() == DeleteWindow::Accepted) {
             Contact *contact = ob_repository->getContacts()->at(w_tablewidget_book->selectedItems().at(0)->row());
             ob_repository->remove(contact);
@@ -174,4 +189,9 @@ void StartWindow::selectedContact() {
         w_button_edit_contact->hide();
         w_button_remove_contact->hide();
     }
+}
+
+void StartWindow::hideError() {
+    ob_timer->stop();
+    w_label_error->hide();
 }

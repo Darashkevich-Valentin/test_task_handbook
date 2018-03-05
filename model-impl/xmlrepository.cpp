@@ -1,9 +1,8 @@
 #include "xmlrepository.h"
-#include <QDebug>
 
-XMLRepository::XMLRepository()
+XMLRepository::XMLRepository(QString filename)
 {
-    ob_file_repository = new QFile;
+    ob_file_repository = new QFile(filename);
     ob_xmlreader = new QXmlStreamReader(ob_file_repository);
     ob_xmlwriter = new QXmlStreamWriter(ob_file_repository);
     contacts = new QList<Contact*>();
@@ -12,9 +11,8 @@ XMLRepository::XMLRepository()
 }
 
 void XMLRepository::open(QIODevice::OpenMode mode) {
-    ob_file_repository->setFileName("D:/contacts.xml");
     if(!ob_file_repository->open(mode)) {
-        emit error("Ошибка открытия файла "+ob_file_repository->fileName());
+        emit error(ob_file_repository->errorString());
     }
 }
 
@@ -66,22 +64,23 @@ QList<Contact*>* XMLRepository::getContacts() {
 void XMLRepository::readAll() {
     contacts->clear();
     open(QIODevice::ReadOnly);
-    while(!ob_xmlreader->atEnd()) {
-        QXmlStreamReader::TokenType type = ob_xmlreader->readNext();
-        if(!ob_xmlreader->hasError()) {
-            if(type == QXmlStreamReader::StartElement && ob_xmlreader->name() == "Contact" && ob_xmlreader->attributes().count() == 2) {
-                if(ob_xmlreader->attributes().at(0).name() == "name" && ob_xmlreader->attributes().at(1).name() == "phone") {
-                    Contact *contact = new PhoneContact;
-                    contact->setName(ob_xmlreader->attributes().at(0).value().toString());
-                    contact->setPhoneNumber(ob_xmlreader->attributes().at(1).value().toString());
-                    contacts->append(contact);
-                    connect(contact,SIGNAL(contactChanged()),SLOT(contactChanged()));
+    if(ob_file_repository->exists()) {
+        while(!ob_xmlreader->atEnd()) {
+            QXmlStreamReader::TokenType type = ob_xmlreader->readNext();
+            if(!ob_xmlreader->hasError()) {
+                if(type == QXmlStreamReader::StartElement && ob_xmlreader->name() == "Contact" && ob_xmlreader->attributes().count() == 2) {
+                    if(ob_xmlreader->attributes().at(0).name() == "name" && ob_xmlreader->attributes().at(1).name() == "phone") {
+                        Contact *contact = new PhoneContact;
+                        contact->setName(ob_xmlreader->attributes().at(0).value().toString());
+                        contact->setPhoneNumber(ob_xmlreader->attributes().at(1).value().toString());
+                        contacts->append(contact);
+                        connect(contact,SIGNAL(contactChanged()),SLOT(contactChanged()));
+                    }
                 }
+            } else {
+                emit error(ob_xmlreader->errorString());
+                break;
             }
-        } else {
-            qDebug() << ob_xmlreader->errorString();
-            emit error("Ошибка в чтении XML документа. Возможно повреждение структуры документа");
-            break;
         }
     }
     close();

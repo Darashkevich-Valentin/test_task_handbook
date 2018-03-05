@@ -7,11 +7,13 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QRegularExpressionValidator>
 
 class ContactWindow : public QDialog
 {
 public:
     ContactWindow(QWidget *parent = 0);
+    ~ContactWindow();
 
     QString name();
     QString phoneNumber();
@@ -35,6 +37,8 @@ private:
 
     QLineEdit *w_line_name,
               *w_line_phone;
+
+    QRegularExpressionValidator *ob_validator_phone;
 
     void createObjects();
     void initUI();

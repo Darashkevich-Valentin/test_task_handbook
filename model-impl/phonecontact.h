@@ -1,7 +1,6 @@
 #ifndef PHONECONTACT_H
 #define PHONECONTACT_H
 
-
 #include <QObject>
 #include "model/contact.h"
 
@@ -9,8 +8,6 @@ class PhoneContact : public Contact
 {
     Q_OBJECT
 public:
-    PhoneContact();
-
     QString name();
     QString phoneNumber();
 

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QList>
-#include <model/contact.h>
+#include "model/contact.h"
 
 class Repository : public QObject
 {

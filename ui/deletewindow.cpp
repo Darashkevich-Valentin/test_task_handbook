@@ -32,6 +32,7 @@ void DeleteWindow::initUI() {
     l_hlay_buttons->addWidget(w_button_ok);
     l_hlay_buttons->addWidget(w_button_cancel);
     l_hlay_buttons->setContentsMargins(0, 0, 0, 0);
+    l_hlay_buttons->setSpacing(1);
 
     w_label_img->setAlignment(Qt::AlignCenter);
 
@@ -59,4 +60,8 @@ void DeleteWindow::connectSignals() {
 
 void DeleteWindow::setQuestionText(QString name) {
     w_label_question->setText(name);
+}
+
+DeleteWindow::~DeleteWindow() {
+    delete l_vlay_root;
 }

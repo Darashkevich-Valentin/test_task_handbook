@@ -11,6 +11,7 @@ class DeleteWindow : public QDialog
 {
 public:
     DeleteWindow(QWidget *parent = 0);
+    ~DeleteWindow();
 
     void setQuestionText(QString name);
 private:
