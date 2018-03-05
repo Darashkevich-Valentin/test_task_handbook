@@ -73,7 +73,6 @@ void XMLRepository::readAll() {
                 }
             }
         } else {
-            qDebug() << "error";
             emit error("Ошибка в чтении XML документа. Возможно повреждение структуры документа");
             break;
         }

@@ -9,6 +9,8 @@
 #include <model-impl/phonecontact.h>
 #include <model-impl/xmlrepository.h>
 #include <model/repository.h>
+#include <QHeaderView>
+#include <QHBoxLayout>
 
 class StartWindow : public QWidget
 {
@@ -27,6 +29,7 @@ private:
     QPushButton *w_button_remove_contact;
 
     QVBoxLayout *l_vlay_root;
+    QHBoxLayout *l_hlay_buttons;
 
     Repository *ob_repository;
 
