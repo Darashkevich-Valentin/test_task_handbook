@@ -28,7 +28,8 @@ SOURCES += \
         ui/startwindow.cpp \
     model-impl/phonecontact.cpp \
     model-impl/xmlrepository.cpp \
-    ui/contactwindow.cpp
+    ui/contactwindow.cpp \
+    ui/deletewindow.cpp
 
 HEADERS += \
         ui/startwindow.h \
@@ -36,7 +37,8 @@ HEADERS += \
     model/contact.h \
     model/repository.h \
     model-impl/xmlrepository.h \
-    ui/contactwindow.h
+    ui/contactwindow.h \
+    ui/deletewindow.h
 
 RESOURCES += \
     resources.qrc

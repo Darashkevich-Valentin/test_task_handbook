@@ -19,7 +19,9 @@ void StartWindow::createObjects() {
     l_vlay_root = new QVBoxLayout;
     l_hlay_buttons = new QHBoxLayout;
 
-    w_contactwindow = new ContactWindow;
+    w_contactwindow = new ContactWindow(this);
+
+    w_deletewindow = new DeleteWindow(this);
 }
 
 void StartWindow::connectSignals() {
@@ -121,7 +123,31 @@ void StartWindow::addContact() {
 }
 
 void StartWindow::removeContact() {
+    QList<QTableWidgetItem*> selectedItems = w_tablewidget_book->selectedItems();
 
+    if(w_tablewidget_book->selectedItems().count() > 2) {
+        w_deletewindow->setQuestionText("Действительно удалить эти контакты?");
+        QList<int> items;
+        if(w_deletewindow->exec() == DeleteWindow::Accepted) {
+            foreach (QTableWidgetItem *item, selectedItems) {
+                if(!items.contains(item->row())) {
+                    items.append(item->row());
+                }
+            }
+            std::sort(items.begin(), items.end());
+            for(int i = items.count()-1; i >= 0; i--) {
+                Contact *contact = ob_repository->getContacts()->at(items.at(i));
+                ob_repository->remove(contact);
+            }
+        }
+    } else {
+        w_deletewindow->setQuestionText("Действительно удалить этот контакт?");
+        qDebug() << "sdfsdfdsf";
+        if(w_deletewindow->exec() == DeleteWindow::Accepted) {
+            Contact *contact = ob_repository->getContacts()->at(w_tablewidget_book->selectedItems().at(0)->row());
+            ob_repository->remove(contact);
+        }
+    }
 }
 
 void StartWindow::editContact() {

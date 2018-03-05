@@ -6,5 +6,6 @@
         <file>resources/img/accept.png</file>
         <file>resources/img/cancel.png</file>
         <file>resources/img/contact.png</file>
+        <file>resources/img/delete_contact.png</file>
     </qresource>
 </RCC>

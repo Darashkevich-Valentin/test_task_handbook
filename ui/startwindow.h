@@ -12,6 +12,7 @@
 #include <QHeaderView>
 #include <QHBoxLayout>
 #include <ui/contactwindow.h>
+#include <ui/deletewindow.h>
 
 
 class StartWindow : public QWidget
@@ -26,14 +27,17 @@ public:
 
 private:
     QTableWidget *w_tablewidget_book;
-    QPushButton *w_button_add_contact;
-    QPushButton *w_button_edit_contact;
-    QPushButton *w_button_remove_contact;
+
+    QPushButton *w_button_add_contact,
+                *w_button_edit_contact,
+                *w_button_remove_contact;
 
     QVBoxLayout *l_vlay_root;
     QHBoxLayout *l_hlay_buttons;
 
     ContactWindow *w_contactwindow;
+
+    DeleteWindow *w_deletewindow;
 
     Repository *ob_repository;
 
